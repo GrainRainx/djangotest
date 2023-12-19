@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.shortcuts import render
 
 # Create your views here.
@@ -222,6 +223,22 @@ class PrettyModelNumForm(forms.ModelForm):
         for name, filed in self.fields.items():
             # placeholder 是默认显示的内容是什么
             filed.widget.attrs = {'class': 'form-control', 'placeholder':filed.label}
+
+
+    # 下面这种方法也能检查输入格式是否是对的
+    # clean是django检查的默认前缀
+    def clean_mobile(self):
+        txt_mobile = self.cleaned_data['mobile']
+        exists = models.PrettyNum.objects.filter(mobile=txt_mobile).exists()
+        if exists:
+            # 刚才写成return了，导致直接返回手机号了，应该要抛出错误才行
+            raise ValidationError('手机号已存在')
+
+    #     if len(txt_mobile) != 11:
+    #         return ValidationError('格式错误')
+        return txt_mobile
+
+
 def pretty_add(request):
     """靓号增加"""
     if request.method == "GET":
@@ -235,3 +252,52 @@ def pretty_add(request):
         return redirect('/pretty/list/')
 
     return render(request, 'pretty_add.html', {"form":form})
+
+
+class PrettyEditModelNumForm(forms.ModelForm):
+    mobile = forms.CharField(
+        disabled=False, label='手机号'
+    )
+
+    class Meta:
+        model = models.PrettyNum
+        fields = ['mobile', 'price', 'level', 'status']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for name, filed in self.fields.items():
+            filed.widget.attrs = {'class': 'form-control', 'placeholder': filed.label}
+    # 对于编辑的手机号，应该排除自己外的手机号不能重复
+
+    def clean_mobile(self):
+
+        # 拿到当前编辑的那一行手机号的id是多少
+        #  通过instance.pk拿到
+        txt_mobile = self.cleaned_data['mobile']
+        exists = models.PrettyNum.objects.exclude(id=self.instance.pk).filter(mobile=txt_mobile).exists()
+        if exists:
+            raise ValidationError('手机号已经存在')
+        return txt_mobile
+
+
+
+def pretty_edit(request,nid):
+    """靓号编辑"""
+
+    row_object = models.PrettyNum.objects.filter(id=nid).first()
+
+    if request.method == 'GET':
+        form = PrettyEditModelNumForm(instance=row_object)
+        return render(request, 'pretty_edit.html', {"form":form})
+
+    form = PrettyEditModelNumForm(data=request.POST,instance=row_object)
+    if form.is_valid():
+        form.save()
+        return redirect('/pretty/list/')
+
+    return render(request, 'pretty_edit.html', {"form":form})
+
+
+def pretty_delete(request,nid):
+    models.PrettyNum.objects.filter(id=nid).delete()
+    return redirect('/pretty/list/')
