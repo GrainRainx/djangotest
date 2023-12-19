@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
 from app01 import views
 
 urlpatterns = [
@@ -44,4 +43,8 @@ urlpatterns = [
     path('pretty/add/', views.pretty_add),
     path('pretty/<int:nid>/edit/', views.pretty_edit),
     path('pretty/<int:nid>/delete/', views.pretty_delete),
+
+
+
+
 ]

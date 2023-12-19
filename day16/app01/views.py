@@ -115,27 +115,38 @@ def user_add(request):
 
 
 from django import forms
-class UserModelForm(forms.ModelForm):
+
+from app01.utils.bootstrap import BootStrapModelForm
+
+
+class UserModelForm(BootStrapModelForm):
     class Meta:
         model = models.UserInfo
         fields = ['name', 'password', 'age', 'account', 'create_time', 'gender', 'depart']
-        # 修改models的样式
-        # widgets = {
-        #     "name": forms.TextInput(attrs={'class': 'form-control'}),
-        #     "password": forms.TextInput(attrs={'class': 'form-control'}),
-        #     "age": forms.TextInput(attrs={'class': 'form-control'})
-        # }
 
-    # 重新定义init方法
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
-        # 循环找到所有的插件，不用向上面的widget那样一个一个手动添加
-        # 对每个循环的字段加一个样式class
-        for name, filed in self.fields.items():
-            # placeholder 是默认显示的内容是什么
-            filed.widget.attrs = {'class': 'form-control', 'placeholder':filed.label}
-
+# class UserModelForm(forms.ModelForm):
+#     class Meta:
+#         model = models.UserInfo
+#         fields = ['name', 'password', 'age', 'account', 'create_time', 'gender', 'depart']
+#         # 修改models的样式
+#         # widgets = {
+#         #     "name": forms.TextInput(attrs={'class': 'form-control'}),
+#         #     "password": forms.TextInput(attrs={'class': 'form-control'}),
+#         #     "age": forms.TextInput(attrs={'class': 'form-control'})
+#         # }
+#
+#     # 重新定义init方法
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#
+#         # 循环找到所有的插件，不用向上面的widget那样一个一个手动添加
+#         # 对每个循环的字段加一个样式class
+#         for name, filed in self.fields.items():
+#
+#             # placeholder 是默认显示的内容是什么
+#             filed.widget.attrs = {'class': 'form-control', 'placeholder':filed.label}
+#
 
 
 def user_model_form_add(request):
@@ -301,3 +312,5 @@ def pretty_edit(request,nid):
 def pretty_delete(request,nid):
     models.PrettyNum.objects.filter(id=nid).delete()
     return redirect('/pretty/list/')
+
+
