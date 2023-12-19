@@ -1,7 +1,7 @@
 from django import forms
 
 # 设置一个基本的样式，让所有的都继承
-class BootStrapModelForm(forms.Form):
+class BootStrapModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for name, field in self.fields.items():

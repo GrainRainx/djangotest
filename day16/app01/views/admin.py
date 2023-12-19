@@ -18,3 +18,22 @@ def admin_list(request):
     return render(request, 'admin_list.html', contex)
 
 
+
+class AdminModelForm(BootStrapModelForm):
+    confirm_password = forms.CharField(
+        label='确认密码',
+        widget=forms.PasswordInput()
+    )
+
+    class Meta:
+        model = models.Admin
+        fields = ["username", "password"]
+        widgets = {
+            "password": forms.PasswordInput()
+        }
+
+
+def admin_add(request):
+    """添加管理员"""
+    form = AdminModelForm()
+    return render(request, 'change.html', {"form": form, "title": "新建管理员"})
