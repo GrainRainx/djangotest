@@ -11,5 +11,5 @@ class BootStrapModelForm(forms.ModelForm):
             else:
                 field.widget.attrs = {
                     "class": "form-control",
-                    "placeholder": field
+                    "placeholder": field.label
                 }

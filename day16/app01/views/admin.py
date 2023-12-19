@@ -21,15 +21,15 @@ def admin_list(request):
 
 class AdminModelForm(BootStrapModelForm):
     confirm_password = forms.CharField(
-        label='确认密码',
-        widget=forms.PasswordInput()
+        label="确认密码",
+        widget=forms.PasswordInput
     )
 
     class Meta:
         model = models.Admin
-        fields = ["username", "password"]
+        fields = ["username", "password", "confirm_password"]
         widgets = {
-            "password": forms.PasswordInput()
+            "password": forms.PasswordInput
         }
 
 
