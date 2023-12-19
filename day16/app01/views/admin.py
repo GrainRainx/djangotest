@@ -66,4 +66,80 @@ def admin_add(request):
 
     return render(request, 'change.html', {"form": form, "title": titel})
 
+class AdminEditModelForm(BootStrapModelForm):
+    class Meta:
+        model = models.Admin
+        fields = ["username"]
 
+
+
+def admin_edit(request,nid):
+    """编辑管理员"""
+    row_object = models.Admin.objects.filter(id=nid).first()
+    if not row_object:
+        return redirect('/admin/list/')
+
+    title = "编辑管理员"
+    # print("nid = " + str(nid))
+    if request.method == "GET":
+        form = AdminEditModelForm(instance=row_object)
+        return render(request, 'change.html', {"form":form, "title": title})
+
+
+    form = AdminEditModelForm(data=request.POST, instance=row_object)
+    if form.is_valid():
+        form.save()
+        return redirect('/admin/list/')
+
+    return render(request, 'change.html', {"form": form,"title": title})
+
+def admin_delete(request,nid):
+    """删除管理员"""
+    models.Admin.objects.filter(id=nid).delete()
+    return redirect('/admin/list/')
+
+
+class AdminResetModelForm(BootStrapModelForm):
+    confirm_password = forms.CharField(
+        label="确认密码",
+        widget=forms.PasswordInput
+    )
+    class Meta:
+        model = models.Admin
+        fields = ["password", "confirm_password"]
+        widgets = {
+            "password": forms.PasswordInput
+        }
+
+    def clean_password(self):
+        pwd = self.cleaned_data.get("password")
+        # print("whereis mde"+md5(pwd))
+        
+        return md5(pwd)
+    # 在前端增加一个校验格式的函数
+    def clean_confirm_password(self):
+        pwd = self.cleaned_data.get("password")
+        confirm = md5(self.cleaned_data.get("confirm_password"))
+        if confirm != pwd:
+            raise ValidationError("密码不一致")
+
+        return confirm
+
+
+
+def admin_reset(request,nid):
+    """重置密码"""
+    row_object = models.Admin.objects.filter(id=nid).first()
+    if not row_object:
+        return redirect('/admin/list/')
+    title = "重置密码"
+    if request.method == "GET":
+        form = AdminResetModelForm()
+        return render(request, 'change.html', {"form":form, "title": title})
+
+    form = AdminResetModelForm(data=request.POST, instance=row_object)
+    if form.is_valid():
+        form.save()
+        return redirect('/admin/list/')
+
+    return render(request, 'change.html', {"form":form, "title":title})
