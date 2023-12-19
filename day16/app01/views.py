@@ -176,6 +176,13 @@ def user_edit(request, nid):
     form = UserModelForm(data=request.POST, instance=row_object)
     if form.is_valid():
         # form.save()是添加数据的，而不是更新数据的
+        # 默认保存用户输入的所有数据，如果想保存不是用户输入的数据
+        # 可以form.instance = 值
         form.save()
         return redirect('/user/list/')
     return render(request, 'user_edit.html', {"form":form})
+
+
+def user_delete(request, nid):
+    models.UserInfo.objects.filter(id=nid).delete()
+    return redirect('/user/list/')
