@@ -186,3 +186,52 @@ def user_edit(request, nid):
 def user_delete(request, nid):
     models.UserInfo.objects.filter(id=nid).delete()
     return redirect('/user/list/')
+
+
+def pretty_list(request):
+    """靓号列表"""
+
+    # 相当于select * from 表 by order desc;
+    querySet = models.PrettyNum.objects.all().order_by('-level')
+
+    return render(request, 'pretty_list.html', {'querySet':querySet})
+
+
+from django import forms
+
+
+
+from django.core.validators import RegexValidator
+
+class PrettyModelNumForm(forms.ModelForm):
+    mobile = forms.CharField(
+        label='手机号',
+        validators=[RegexValidator(r'^1[3-9]\d{9}$', '手机号格式错误')]
+    )
+
+    class Meta:
+        model = models.PrettyNum
+        # 如果是下面的用法，代表fields全选
+        # fileds = "__all__"
+        fields = ['mobile', 'price', 'level', 'status']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # 循环找到所有的插件，不用向上面的widget那样一个一个手动添加
+        # 对每个循环的字段加一个样式class
+        for name, filed in self.fields.items():
+            # placeholder 是默认显示的内容是什么
+            filed.widget.attrs = {'class': 'form-control', 'placeholder':filed.label}
+def pretty_add(request):
+    """靓号增加"""
+    if request.method == "GET":
+        form = PrettyModelNumForm()
+        return render(request, 'pretty_add.html', {"form":form})
+
+    form = PrettyModelNumForm(data=request.POST)
+
+    if form.is_valid():
+        form.save()
+        return redirect('/pretty/list/')
+
+    return render(request, 'pretty_add.html', {"form":form})
