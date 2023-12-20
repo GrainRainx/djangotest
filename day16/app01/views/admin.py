@@ -10,6 +10,13 @@ from app01.utils.bootstrap import BootStrapModelForm
 
 def admin_list(request):
     """管理员列表"""
+
+    info = request.session.get("info")  # 获取session的info字典的用户cookie凭证
+    if not info:
+        # 如果没有登录，重新登录
+        return redirect('/login/')
+
+
     querySet = models.Admin.objects.all()
 
     contex = {
@@ -114,7 +121,7 @@ class AdminResetModelForm(BootStrapModelForm):
     def clean_password(self):
         pwd = self.cleaned_data.get("password")
         # print("whereis mde"+md5(pwd))
-        
+
         return md5(pwd)
     # 在前端增加一个校验格式的函数
     def clean_confirm_password(self):
