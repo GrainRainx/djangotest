@@ -4,19 +4,22 @@ from django.db import models
 
 
 
-
+class Permissions(models.Model):
+    permission_level = models.CharField(verbose_name='权限', max_length=32)
+    def __str__(self):
+        return self.permission_level
 
 
 class Admin(models.Model):
     """管理员"""
     username = models.CharField(max_length=32, verbose_name='用户名')
     password = models.CharField(max_length=64, verbose_name='密码')
+    Admin_level = models.ForeignKey(verbose_name='管理员权限', to='Permissions', to_field='id', on_delete=models.CASCADE,default=2)
 
 
 class Department(models.Model):
     """部门表"""
     title = models.CharField(verbose_name='标题', max_length=32)
-
     def __str__(self):
         return self.title
 
@@ -43,6 +46,7 @@ class UserInfo(models.Model):
         (2, '女')
     )
     gender = models.SmallIntegerField(choices=gender_choices, verbose_name='性别')
+    User_level = models.ForeignKey(verbose_name='员工权限', to='Permissions', to_field='id', on_delete=models.CASCADE, default=3)
 
 
 class PrettyNum(models.Model):

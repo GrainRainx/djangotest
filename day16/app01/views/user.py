@@ -1,3 +1,4 @@
+from app01.utils.encrypt import md5
 from app01.utils.form import UserModelForm, PrettyModelNumForm, PrettyEditModelNumForm
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
@@ -114,6 +115,10 @@ def user_model_form_add(request):
     if form.is_valid():
         # print(form.cleaned_data)
         # form知道是哪个表，所以会自动翻译，然后在表上添加数据
+        cleaned_data = form.cleaned_data
+        tppp = cleaned_data.get('password')
+        form.instance.password = md5(tppp)
+        print("tpp" + tppp)
         form.save()
         return redirect('/user/list/')
     else:

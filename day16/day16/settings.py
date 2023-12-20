@@ -48,7 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'app01.middleware.auth.AuthMiddleware'
+    # 'app01.middleware.auth.AuthMiddleware'
 ]
 
 ROOT_URLCONF = 'day16.urls'
@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'day16.wsgi.application'
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.mysql',
-    'NAME':'mytestdjango1',
+    'NAME':'test_django_lg',
     'USER': 'root',
     'PASSWORD': 'nooneandyou96',
     'HOST': '127.0.0.1',

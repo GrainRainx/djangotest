@@ -9,7 +9,7 @@ from app01.utils.bootstrap import BootStrapModelForm
 class UserModelForm(BootStrapModelForm):
     class Meta:
         model = models.UserInfo
-        fields = ['name', 'password', 'age', 'account', 'create_time', 'gender', 'depart']
+        fields = ['name', 'password', 'age', 'account', 'create_time', 'gender', 'depart', 'User_level']
 
 class PrettyModelNumForm(BootStrapModelForm):
     mobile = forms.CharField(
