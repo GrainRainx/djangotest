@@ -1,0 +1,41 @@
+{% extends 'staff_info.html' %}
+
+
+{% block content %}
+     <div>
+        <div class="container">
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">
+                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+                    用户
+                </div>
+                <!-- Table -->
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>姓名</th>
+                        <th>入职时间</th>
+                        <th>性别</th>
+                        <th>所属部门</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for obj in querySet %}
+                        <tr>
+                            <th scope="row">{{ obj.id }}</th>
+                            <td>{{ obj.name }}</td>
+                            <td>{{ obj.create_time|date:"Y-m-d" }}</td>
+                            <td>{{ obj.get_gender_display }}</td>
+                            <td>{{ obj.depart.title }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

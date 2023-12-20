@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app01.views import depart, user, pretty, admin, account
+from app01.views import depart, user, pretty, admin, account, staff
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
@@ -52,7 +52,14 @@ urlpatterns = [
     path('admin/<int:nid>/reset/', admin.admin_reset),
 
     # 登录页面
-
+    path('', account.login),
     path('login/', account.login),
+    path('logout/', account.logout),
+    path('register/', account.register),
 
+    # 员工登录页面
+
+    path('staff/list/', staff.staff_list),
+    path('staff_user/list/', staff.staff_user_list),
+    path('staff_depart/list/', staff.staff_depart_list),
 ]

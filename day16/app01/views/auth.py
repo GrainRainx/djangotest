@@ -2,7 +2,6 @@ from django.utils.deprecation import MiddlewareMixin
 from django.shortcuts import HttpResponse, render, redirect
 class AuthMiddleware(MiddlewareMixin):
 
-
     def process_request(self, request):
         if request.path_info == '/login/':
             return
