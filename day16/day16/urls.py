@@ -62,4 +62,8 @@ urlpatterns = [
     path('staff/list/', staff.staff_list),
     path('staff_user/list/', staff.staff_user_list),
     path('staff_depart/list/', staff.staff_depart_list),
+    path('staff_pretty/add/', staff.staff_pretty_add),
+    path('staff_pretty/<int:nid>/edit/', staff.staff_pretty_edit),
+    path('staff_pretty/<int:nid>/delete/', staff.staff_pretty_delete),
+
 ]

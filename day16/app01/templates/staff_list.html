@@ -5,7 +5,7 @@
      <div>
         <div class="container">
             <div style="margin-bottom: 10px">
-                <a class="btn btn-primary" href="/pretty/add/" target="_blank">新建靓号</a>
+                <a class="btn btn-primary" href="/staff_pretty/add/" target="_blank">新建靓号</a>
             </div>
 
             <div class="panel panel-default">
@@ -35,8 +35,8 @@
                             <td>{{ obj.get_level_display }}</td>
                             <td>{{ obj.get_status_display }}</td>
                             <td>
-                                <a class="btn btn-primary btn-xs" href="/pretty/{{ obj.id }}/edit/">编辑</a>
-                                <a class="btn btn-danger btn-xs" href="/pretty/{{ obj.id }}/delete/">删除</a>
+                                <a class="btn btn-primary btn-xs" href="/staff_pretty/{{ obj.id }}/edit/">编辑</a>
+                                <a class="btn btn-danger btn-xs" href="/staff_pretty/{{ obj.id }}/delete/">删除</a>
                             </td>
                         </tr>
                     {% endfor %}
