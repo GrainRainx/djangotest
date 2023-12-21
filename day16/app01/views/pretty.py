@@ -14,7 +14,7 @@ def pretty_list(request):
     """靓号列表"""
 
     # 相当于select * from 表 by order desc;
-    querySet = models.PrettyNum.objects.all().order_by('-level')
+    querySet = models.PrettyNum.objects.all().order_by('-status', '-level', '-price')
 
     return render(request, 'pretty_list.html', {'querySet':querySet})
 

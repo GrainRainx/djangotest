@@ -4,7 +4,7 @@ class AuthMiddleware(MiddlewareMixin):
 
 
     def process_request(self, request):
-        if request.path_info == '/login/':
+        if request.path_info == '/login/' or request.path_info == '/register/':
             return
         info_dict = request.session.get('info')
         if info_dict:
